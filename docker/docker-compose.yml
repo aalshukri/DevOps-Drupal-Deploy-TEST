@@ -20,7 +20,7 @@ services:
         - 3306:3306        
     volumes:
       - ../www:/var/www/html/
-#      - ./setup:/setup/
+      - ../deploy:/deploy/
     networks:
       - lempnet          
     tty: true
