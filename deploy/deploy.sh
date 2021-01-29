@@ -8,6 +8,14 @@
 #
 #
 
+# Settings
+gitrepo="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
+
+dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST"
+dir_build=""
+dir_live=""
+
+
 # Function startup()
 #  Outputs basic system level settings
 func_startup(){
@@ -32,19 +40,23 @@ func_end(){
 # Function updateCode()
 #  gets latest version of code from github
 func_updateCode(){
-    #do nothing
+    echo " Getting latest code from GitHub"
+    echo "  repo = "$gitrepo
+    echo "  dir  = "$dir_git
+    cd $dir_git
+    git pull
 }
 
 # Function build()
 #  executes application build process.
 func_build(){
-    #do nothing
+    echo " Build application"
 }
 
-# Function goLive
+# Function goLive()
 #  copy code to live directory
 func_goLive(){
-    #do nothing
+    echo " Go Live"
 }
 
 
