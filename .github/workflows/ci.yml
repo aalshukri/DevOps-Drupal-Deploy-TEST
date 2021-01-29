@@ -1,0 +1,15 @@
+name: CI Script
+on: [push]
+
+jobs:
+  # Deploy Process
+  deploy:
+    runs-on: ubuntu-18.04 
+    steps:   
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2.1.0
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - name: Execute test Script
+      run: touch test.txt
