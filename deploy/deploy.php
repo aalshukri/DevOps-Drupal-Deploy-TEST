@@ -27,6 +27,11 @@ host('project.com')
     
 // Tasks
 
+task('test', function () {
+    writeln('Hello world');
+});
+
+
 task('build', function () {
     run('cd {{release_path}} && build');
 });
