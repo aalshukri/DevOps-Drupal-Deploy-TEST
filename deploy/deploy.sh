@@ -8,7 +8,7 @@
 #
 #
 
-# Function StartUp()
+# Function startup()
 #  Outputs basic system level settings
 func_startup(){
     start=`date +%s`
@@ -18,7 +18,7 @@ func_startup(){
     echo "uptime : "$(uptime -p)
 }
 
-# Function End()
+# Function end()
 #  outputs script execution time
 func_end(){
     end=`date +%s`
@@ -29,9 +29,29 @@ func_end(){
     echo "Runtime: $hours:$minutes:$seconds (hh:mm:ss)"
 }
 
+# Function updateCode()
+#  gets latest version of code from github
+func_updateCode(){
+    #do nothing
+}
+
+# Function build()
+#  executes application build process.
+func_build(){
+    #do nothing
+}
+
+# Function goLive
+#  copy code to live directory
+func_goLive(){
+    #do nothing
+}
+
 
 #
 # Main
 func_startup;
-sleep 5;
+func_updateCode;
+func_build;
+func_goLive;
 func_end;
