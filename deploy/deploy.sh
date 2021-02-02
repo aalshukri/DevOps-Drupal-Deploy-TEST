@@ -17,7 +17,7 @@ dir_live="/var/www/html/drupalwebapp/"
 
 
 # Function startup()
-#  Outputs basic system level settings
+#  outputs basic system level settings
 func_startup(){
     start=`date +%s`
     echo "start  : "$(date)
@@ -27,7 +27,7 @@ func_startup(){
 }
 
 # Function end()
-#  outputs script execution time
+#  Outputs script execution time
 func_end(){
     end=`date +%s`
     runtime=$((end-start))
