@@ -52,6 +52,8 @@ func_updateCode(){
 #  executes application build process.
 func_build(){
     echo "-Build"
+    cd $dir_build
+    composer install    
     echo "-Done"    
 }
 
