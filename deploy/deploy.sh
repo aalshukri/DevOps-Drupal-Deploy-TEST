@@ -102,7 +102,13 @@ func_build(){
 
 # Function enable/disable maintenance mode
 func_maintenanceMode(){
-    echo "do nothing";
+    if [ "$1" = true ] ; then
+        echo "enable maintenance mode";
+    elif [ "$1" = false ] ; then
+        echo "disable maintenance mode";
+    else    
+        echo "maintenance mode option not recognised";
+    fi
 }
 
 # Function back up live
@@ -151,24 +157,28 @@ func_goLive(){
 
     if [ $env = "local" ]; then
         echo "-local"
-        func_maintenanceMode;
-        func_dataSeed;
-        func_maintenanceMode;          
+        func_maintenanceMode true;        
+        func_updateLive;
+        func_dataSeed;        
+        func_maintenanceMode false;          
     elif [ $env = "test" ]; then
         echo "-test"
-        func_maintenanceMode;
+        func_maintenanceMode true;
         func_dataSeed;
         func_updateLive;
+        func_maintenanceMode false;         
     elif [ $env = "stage" ]; then
         echo "-stage"  
-        func_maintenanceMode;
+        func_maintenanceMode true;
         func_dataRestore;
-        func_updateLive;     
+        func_updateLive;
+        func_maintenanceMode false;         
     elif [ $env = "prod" ]; then
         echo "-prod"
-        func_maintenanceMode;
+        func_maintenanceMode true;
         func_backupLive;
-        func_updateLive;        
+        func_updateLive;
+        func_maintenanceMode false;         
     else
         echo "Failure: ENV not set" >&2
         echo "Exiting!!!" >&2
