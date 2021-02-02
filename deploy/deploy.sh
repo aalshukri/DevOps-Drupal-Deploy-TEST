@@ -8,12 +8,33 @@
 #
 #
 
-# Settings
-gitrepo="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
+# Function init()
+#  loads config file with specifc env variables
+#  env='local', 'test', 'stage', 'prod'
+func_init(){    
+    configFile='config'
+    if [ -f "$configFile" ]; then
+        source $configFile;
+        echo $ENV
 
-dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/"
-dir_build=$dir_git"www/drupalwebapp/"
-dir_live="/var/www/html/TMP/"
+        #Load settings
+        env=$ENV;
+        gitrepo=$GIT_REPO;
+        #gitrepo="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
+
+        #dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/"
+        dir_git=$DIR_GIT
+        dir_build=$DIR_BUILD
+        dir_live=$DIR_LIVE
+
+    else
+        echo "Config file not found [$configFile]" >&2
+        echo "Exiting!!!" >&2
+        exit 1
+    fi
+}
+func_init;
+
 
 # Function checkCmdStatus()
 #  check the status of previously executed command
@@ -35,9 +56,15 @@ func_checkCmdStatus(){
 func_startup(){
     start=`date +%s`
     echo "start  : "$(date)
+    echo "env    : "$env
     echo "whoami : "$(whoami)
     echo "pwd    : "$(pwd)
     echo "uptime : "$(uptime -p)
+    echo "Settings"
+    echo "gitrepo: "$gitrepo  
+    echo "git    : "$dir_git  
+    echo "build  : "$dir_build
+    echo "live   : "$dir_live
 }
 
 # Function end()
@@ -79,14 +106,20 @@ func_goLive(){
     echo "-GoLive"
     #mantainence mode enabled
     
-    source=$dir_git
+    source=$dir_git"www/"
     destination=$dir_live
+
+    echo "source : "$source
+    echo "dest   : "$destination
+
     rsync -rv --progress --stats \
-        --exclude=dir_git".git" \
-        --exclude=dir_git".github" \
-        --exclude=dir_git"deploy" \        
-        --exclude=dir_git"docker" \
         $source $destination
+
+        #--exclude=dir_git".git" \
+        #--exclude=dir_git".github" \
+        #--exclude=dir_git"deploy" \        
+        #--exclude=dir_git"docker" \
+        #$source $destination
 
     func_checkCmdStatus "rsync"
     #mantainence mode disabled        
@@ -99,5 +132,5 @@ func_goLive(){
 func_startup;
 func_updateCode;
 func_build;
-func_goLive;
+#func_goLive;
 func_end;

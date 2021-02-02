@@ -1,0 +1,5 @@
+ENV='local'
+GIT_REPO="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
+DIR_GIT="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/"
+DIR_BUILD="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/www/drupalwebapp/"
+DIR_LIVE="/var/www/html/TMP/"
