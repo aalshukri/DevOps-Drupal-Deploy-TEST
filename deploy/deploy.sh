@@ -27,6 +27,11 @@ func_init(){
         dir_build=$DIR_BUILD
         dir_live=$DIR_LIVE
 
+        #Redirect output to logfile   
+        dateNow=$(date '+%Y-%m-%d_%H-%M-%S')
+        exec > >(tee -i $DIR_LOG/MORTAR-DM_DeployLog_$dateNow.log)
+        exec 2>&1
+
     else
         echo "Config file not found [$configFile]" >&2
         echo "Exiting!!!" >&2
@@ -132,7 +137,7 @@ func_dataRestore(){
 # Function update Live
 #  copy code from build dir to live
 func_updateLive(){
-    source=$dir_git"www/"
+    source=$dir_git"/www/"
     destination=$dir_live
 
     echo "source : "$source
@@ -158,7 +163,7 @@ func_goLive(){
     if [ $env = "local" ]; then
         echo "-local"
         func_maintenanceMode true;        
-        func_updateLive;
+        #func_updateLive;
         func_dataSeed;        
         func_maintenanceMode false;          
     elif [ $env = "test" ]; then
