@@ -26,6 +26,10 @@ RUN composer global require consolidation/cgr &&  \
 # add to path so drush work from cmd
 ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
+# Install rsync
+RUN apt-get update && apt-get install -y \
+    rsync
+
 
 #Copy startup script
 COPY ./conf/stack-startup.sh /usr/bin/stack-startup.sh
