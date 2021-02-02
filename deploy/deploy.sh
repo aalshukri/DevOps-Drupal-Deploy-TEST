@@ -100,12 +100,32 @@ func_build(){
     echo "-Done"    
 }
 
-# Function goLive()
-#  copy code to live directory
-func_goLive(){
-    echo "-GoLive"
-    #mantainence mode enabled
-    
+# Function enable/disable maintenance mode
+func_maintenanceMode(){
+    echo "do nothing";
+}
+
+# Function back up live
+#  used for roll back in the event of failure
+func_backupLive(){
+    echo "do nothing";
+}
+
+# Function seed data
+#  populate database with seed data.
+func_dataSeed(){
+    echo "do nothing";
+}
+
+# Function restore data
+#  
+func_dataRestore(){
+    echo "do nothing";    
+}
+
+# Function update Live
+#  copy code from build dir to live
+func_updateLive(){
     source=$dir_git"www/"
     destination=$dir_live
 
@@ -122,7 +142,39 @@ func_goLive(){
         #$source $destination
 
     func_checkCmdStatus "rsync"
-    #mantainence mode disabled        
+}
+
+# Function goLive()
+#  copy code to live directory
+func_goLive(){
+    echo "-GoLive"
+
+    if [ $env = "local" ]; then
+        echo "-local"
+        func_maintenanceMode;
+        func_dataSeed;
+        func_maintenanceMode;          
+    elif [ $env = "test" ]; then
+        echo "-test"
+        func_maintenanceMode;
+        func_dataSeed;
+        func_updateLive;
+    elif [ $env = "stage" ]; then
+        echo "-stage"  
+        func_maintenanceMode;
+        func_dataRestore;
+        func_updateLive;     
+    elif [ $env = "prod" ]; then
+        echo "-prod"
+        func_maintenanceMode;
+        func_backupLive;
+        func_updateLive;        
+    else
+        echo "Failure: ENV not set" >&2
+        echo "Exiting!!!" >&2
+        exit 1
+    fi
+
     echo "-Done"
 }
 
@@ -132,5 +184,5 @@ func_goLive(){
 func_startup;
 func_updateCode;
 func_build;
-#func_goLive;
+func_goLive;
 func_end;
