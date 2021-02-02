@@ -11,9 +11,9 @@
 # Settings
 gitrepo="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
 
-dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST"
-dir_build=""
-dir_live="/var/www/html"
+dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/"
+dir_build=$dir_git"www/drupalwebapp/"
+dir_live="/var/www/html/drupalwebapp/"
 
 
 # Function startup()
@@ -61,11 +61,11 @@ func_goLive(){
     echo "-GoLive"
     #mantainence mode enabled
     
-    source="/home/octru/triage/TRIAGE/code/www/triage" 
-    destination="/var/www/html/"
-    sudo rsync -rv --progress --stats \
-        --exclude="/home/octru/triage/TRIAGE/code/www/triage/tests/" \
-        $source $destination      
+    source=$dir_git
+    destination=$dir_live
+    #rsync -rv --progress --stats \
+    #    --exclude="/home/octru/triage/TRIAGE/code/www/triage/tests/" \
+    #    $source $destination      
 
     #mantainence mode disabled        
     echo "-Done"
