@@ -13,7 +13,7 @@ gitrepo="git@github.com:aalshukri/DevOps-Drupal-Deploy-TEST.git"
 
 dir_git="/home/root/gitrepo/DevOps-Drupal-Deploy-TEST/"
 dir_build=$dir_git"www/drupalwebapp/"
-dir_live="/var/www/html/drupalwebapp/"
+dir_live="/var/www/html/TMP/"
 
 
 # Function startup()
@@ -53,7 +53,8 @@ func_updateCode(){
 func_build(){
     echo "-Build"
     cd $dir_build
-    composer install    
+    composer install       
+    [ $? -eq 0 ] && echo "Command was successful" || echo "FAILED!!!"
     echo "-Done"    
 }
 
@@ -65,9 +66,9 @@ func_goLive(){
     
     source=$dir_git
     destination=$dir_live
-    #rsync -rv --progress --stats \
-    #    --exclude="/home/octru/triage/TRIAGE/code/www/triage/tests/" \
-    #    $source $destination      
+    rsync -rv --progress --stats \
+        --exclude="/home/octru/triage/TRIAGE/code/www/triage/tests/" \
+        $source $destination      
 
     #mantainence mode disabled        
     echo "-Done"
