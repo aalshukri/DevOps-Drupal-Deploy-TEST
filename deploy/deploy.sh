@@ -16,6 +16,9 @@ func_init(){
     configFile='config'
     if [ -f "$configFile" ]; then
         source $configFile;
+
+        #enable logging
+        func_createLog;
         echo $ENV
 
         #Load settings
@@ -28,19 +31,21 @@ func_init(){
         dir_build=$DIR_BUILD
         dir_live=$DIR_LIVE
 
-        #Redirect output to logfile   
-        dateNow=$(date '+%Y-%m-%d_%H-%M-%S')
-        exec > >(tee -i $DIR_LOG/MORTAR-DM_DeployLog_$dateNow.log)
-        exec 2>&1
-
     else
         echo "Config file not found [$configFile]" >&2
         echo "Exiting!!!" >&2
         exit 1
     fi
 }
-func_init;
 
+# Function createLog()
+#  Create a log for output from this script to file.
+func_createLog(){
+    #Redirect output to logfile   
+    dateNow=$(date '+%Y-%m-%d_%H-%M-%S')
+    exec > >(tee -i $DIR_LOG/MORTAR-DM_DeployLog_$dateNow.log)
+    exec 2>&1
+}
 
 # Function checkCmdStatus()
 #  check the status of previously executed command
@@ -52,6 +57,7 @@ func_checkCmdStatus(){
     else
         echo "Failure: command failed $1" >&2
         echo "Exiting!!!" >&2
+        func_pingGithub false;
         exit 1
     fi    
 }
@@ -80,8 +86,21 @@ func_end(){
     runtime=$((end-start))
     hours=$((runtime / 3600)); 
     minutes=$(( (runtime % 3600) / 60 )); 
-    seconds=$(( (runtime % 3600) % 60 )); 
+    seconds=$(( (runtime % 3600) % 60 ));
     echo "Runtime: $hours:$minutes:$seconds (hh:mm:ss)"
+    func_pingGithub true;
+}
+
+# Function ping github
+#  ping github with success/failed deployment
+func_pingGithub(){
+    if [ "$1" = true ] ; then
+        echo "deployment success";
+    elif [ "$1" = false ] ; then
+        echo "deployment failed";
+    else    
+        echo "deployment failed";
+    fi
 }
 
 # Function updateCode()
@@ -197,8 +216,9 @@ func_goLive(){
 
 #
 # Main
-func_startup;
-func_updateCode;
-func_build;
-func_goLive;
-func_end;
+#func_init;
+#func_startup;
+#func_updateCode;
+#func_build;
+#func_goLive;
+#func_end;
