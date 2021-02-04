@@ -1,12 +1,13 @@
 #!/bin/bash
 # 
 # deploy.sh
-#
+# @version 0.1
+# @author Ayesh Alshukri
 #
 # Running instructions
 # > ./deploy.sh
 #
-#
+
 
 # Function init()
 #  loads config file with specifc env variables

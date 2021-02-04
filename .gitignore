@@ -1,2 +1,3 @@
 *.bck
 deploy/config
+*.log
