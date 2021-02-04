@@ -6,11 +6,11 @@ jobs:
   deploy:
     runs-on: ubuntu-18.04 
     steps:
-    - name: Setup
-      if: github.ref == 'refs/heads/master'
-      steps:
-        env:
-          TEST_VAR: testvar
+    #- name: Setup
+    #  if: github.ref == 'refs/heads/master'
+    #  steps:
+    #    env:
+    #      TEST_VAR: testvar
     #  run: echo ${{github.ref}}
     - name: Settings
       run echo "$TEST_VAR"
